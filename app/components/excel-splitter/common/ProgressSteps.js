@@ -35,8 +35,8 @@ export default function ProgressSteps({ currentStep }) {
                 currentStep > step.number 
                   ? 'bg-blue-500 text-white' 
                   : currentStep === step.number 
-                    ? 'bg-white border-2 border-blue-500 text-blue-500' 
-                    : 'bg-white border border-gray-300 text-gray-400'
+                    ? 'bg-white border-2 border-blue-500 text-blue-600' 
+                    : 'bg-white border border-gray-300 text-gray-500'
               }`}
             >
               {currentStep > step.number ? (
@@ -50,7 +50,7 @@ export default function ProgressSteps({ currentStep }) {
             
             {/* Step label */}
             <div className={`mt-2 text-xs font-medium transition-colors duration-300 ${
-              currentStep >= step.number ? 'text-gray-700' : 'text-gray-400'
+              currentStep >= step.number ? 'text-gray-700' : 'text-gray-500'
             }`}>
               {step.label}
             </div>

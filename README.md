@@ -5,10 +5,17 @@ A Next.js web application that allows users to upload Excel (.xlsx) files, split
 ## Features
 
 - **User-friendly Interface**: Simple step-by-step process for uploading and splitting files
-- **Preserve Headers**: The first two rows of the original Excel file are preserved in each split file
+- **Multiple File Format Support**: Handles both Excel (.xlsx, .xls) and CSV files
+- **Configurable Headers**: Supports different header row configurations based on file type
+  - Source File (1 header row)
+  - Response Template (2 header rows)
+  - Custom (user-defined number of header rows)
 - **Customizable Chunk Size**: Users can specify how many rows they want in each split file
+- **Real-time Progress Updates**: Shows detailed progress during file processing
+- **Large File Support**: Optimized to handle files up to 200MB+
 - **Instant Download**: Split files are automatically packaged into a ZIP archive for easy download
 - **Responsive Design**: Works well on both desktop and mobile devices
+- **Docker Support**: Easy deployment with Docker
 
 ## Getting Started
 
@@ -60,7 +67,9 @@ yarn dev
 
 ## Deployment
 
-This application can be easily deployed to Vercel:
+### Standard Deployment
+
+This application can be deployed to Vercel or any other Next.js hosting platform:
 
 ```bash
 npm run build
@@ -69,6 +78,38 @@ yarn build
 ```
 
 Then deploy the built application to your preferred hosting platform.
+
+### Docker Deployment
+
+The application is dockerized for easy deployment in any environment that supports Docker.
+
+#### Building the Docker Image
+
+```bash
+docker build -t xebo-response-upload-helper .
+```
+
+#### Running the Docker Container
+
+```bash
+docker run -p 3000:3000 xebo-response-upload-helper
+```
+
+The application will be available at http://localhost:3000
+
+#### Using Docker Compose
+
+Alternatively, you can use Docker Compose for a more streamlined setup:
+
+```bash
+docker-compose up -d
+```
+
+This will build the image and start the container in detached mode. The application will be available at http://localhost:3000
+
+#### Health Check
+
+The Docker container includes a health check endpoint at `/api/health` that can be used to monitor the application's status.
 
 ## License
 
