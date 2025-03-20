@@ -73,22 +73,88 @@ export async function POST(request) {
           let data = [];
 
           try {
-            // Use XLSX to parse both Excel and CSV files
-            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-
-            if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
-              throw new Error('Invalid file format or empty file');
+            // Log file details for debugging
+            console.log('File details:', {
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              arrayBufferLength: arrayBuffer.byteLength
+            });
+            
+            // Check if the array buffer is valid
+            if (!arrayBuffer || arrayBuffer.byteLength === 0) {
+              throw new Error('File buffer is empty or invalid');
             }
-
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-            // Get the data as an array of arrays
-            data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
-
+            
+            // Use different parsing approach based on file type
+            if (isCSV) {
+              console.log('Parsing as CSV file');
+              // For CSV files, use specific options
+              const workbook = XLSX.read(arrayBuffer, { 
+                type: 'array',
+                raw: true,
+                cellDates: true,
+                cellNF: false,
+                cellText: false
+              });
+              
+              console.log('CSV workbook parsed:', {
+                sheetNames: workbook.SheetNames,
+                hasSheets: workbook.SheetNames && workbook.SheetNames.length > 0
+              });
+              
+              if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+                throw new Error('CSV parsing failed: No sheets found');
+              }
+              
+              const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+              console.log('CSV worksheet ref:', worksheet['!ref']);
+              
+              // If !ref is missing, create a default one based on the data
+              if (!worksheet['!ref']) {
+                console.log('No ref found in CSV worksheet, creating default');
+                // Create a minimal reference that covers at least one cell
+                worksheet['!ref'] = 'A1:A1';
+              }
+              
+              data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false });
+            } else {
+              console.log('Parsing as Excel file');
+              // For Excel files
+              const workbook = XLSX.read(arrayBuffer, { 
+                type: 'array',
+                cellDates: true,
+                cellNF: false,
+                cellText: false
+              });
+              
+              console.log('Excel workbook parsed:', {
+                sheetNames: workbook.SheetNames,
+                hasSheets: workbook.SheetNames && workbook.SheetNames.length > 0
+              });
+              
+              if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+                throw new Error('Excel parsing failed: No sheets found');
+              }
+              
+              const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+              console.log('Excel worksheet ref:', worksheet['!ref']);
+              
+              // If !ref is missing, create a default one based on the data
+              if (!worksheet['!ref']) {
+                console.log('No ref found in Excel worksheet, creating default');
+                // Create a minimal reference that covers at least one cell
+                worksheet['!ref'] = 'A1:A1';
+              }
+              
+              data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false });
+            }
+            
             console.log('Parsed data length:', data.length);
+            console.log('First few rows:', data.slice(0, 3));
 
-            if (data.length === 0) {
-              throw new Error('File appears to be empty');
+            if (!data || data.length === 0) {
+              throw new Error('File appears to be empty after parsing');
             }
           } catch (err) {
             console.error('Error parsing file:', err);

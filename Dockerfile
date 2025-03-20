@@ -1,6 +1,13 @@
 # Use Node.js LTS as the base image
 FROM node:20-alpine AS base
 
+# Install dependencies required for file processing
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    libc6-compat
+
 # Set working directory
 WORKDIR /app
 
@@ -43,6 +50,9 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Create a temporary directory for file uploads
+RUN mkdir -p /app/tmp
 
 # Set the correct permissions
 RUN chown -R nextjs:nodejs /app
