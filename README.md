@@ -1,4 +1,4 @@
-# Xebo Excel Splitter
+# Excel/ CSV Splitter
 
 A Next.js web application that allows users to upload Excel (.xlsx) files, split them into smaller chunks, and download the results as a ZIP archive. This tool is particularly useful for handling large Excel files that may be difficult to work with due to their size.
 
