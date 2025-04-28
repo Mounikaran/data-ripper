@@ -1,116 +1,89 @@
-# Excel/ CSV Splitter
+# Data Ripper
 
-A Next.js web application that allows users to upload Excel (.xlsx) files, split them into smaller chunks, and download the results as a ZIP archive. This tool is particularly useful for handling large Excel files that may be difficult to work with due to their size.
+Data Ripper is a web application for uploading, processing, and splitting large Excel (`.xlsx`, `.xls`) and CSV files. It provides a simple interface to configure how files are split and delivers the output as a ZIP archive. The app is designed for reliability and performance, supporting files up to 200MB+ and providing real-time progress updates.
+
+---
 
 ## Features
 
-- **User-friendly Interface**: Simple step-by-step process for uploading and splitting files
-- **Multiple File Format Support**: Handles both Excel (.xlsx, .xls) and CSV files
-- **Configurable Headers**: Supports different header row configurations based on file type
-  - Source File (1 header row)
-  - Response Template (2 header rows)
-  - Custom (user-defined number of header rows)
-- **Customizable Chunk Size**: Users can specify how many rows they want in each split file
-- **Real-time Progress Updates**: Shows detailed progress during file processing
-- **Large File Support**: Optimized to handle files up to 200MB+
-- **Instant Download**: Split files are automatically packaged into a ZIP archive for easy download
-- **Responsive Design**: Works well on both desktop and mobile devices
-- **Docker Support**: Easy deployment with Docker
+- **User-friendly Interface:** Step-by-step upload, configuration, and download
+- **Excel & CSV Support:** Handles `.xlsx`, `.xls`, and `.csv` files
+- **Customizable Headers:** User specifies number of header rows to preserve in each split file
+- **Configurable Chunk Size:** Choose how many rows per split file
+- **Real-time Progress:** Live updates during processing
+- **Efficient Streaming:** Backend streams progress and results efficiently
+- **Instant ZIP Download:** All split files are packaged into a single ZIP
+- **Responsive Design:** Works on desktop and mobile
+- **Docker & Compose Support:** Easy production deployment
 
-## Getting Started
+---
+
+## Architecture
+
+- **Frontend:** Next.js (React, TailwindCSS)
+- **Backend:** FastAPI (Python, Pandas)
+- **Communication:** The frontend uploads files and receives progress/events via Server-Sent Events (SSE) from the backend.
+- **Deployment:** Docker Compose orchestrates both frontend (`app`) and backend (`backend`) services.
+
+---
+
+## Getting Started (Development)
 
 ### Prerequisites
-
 - Node.js 18.x or later
-- npm or yarn package manager
+- Python 3.9+
+- npm or yarn
 
-### Installation
-
-1. Clone the repository
-
+### Clone the repository
 ```bash
-git clone https://github.com/yourusername/xebo-excel-splitter.git
-cd xebo-excel-splitter
+git clone https://github.com/yourusername/data-ripper.git
+cd data-ripper
 ```
 
-2. Install dependencies
+## Docker & Docker Compose
 
+The project includes a `docker-compose.yml` for production-like local deployment.
+
+### Compose Services
+- **app**: Next.js frontend (port 3000)
+- **backend**: FastAPI backend (port 8000)
+
+### Environment Variables
+- `API_URL` (set in docker-compose.yml): Used by the frontend to communicate with the backend.
+- `NODE_ENV=production`
+
+### Build & Run
 ```bash
-npm install
-# or
-yarn install
+docker-compose up --build
 ```
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend: [http://localhost:8000](http://localhost:8000)
 
-3. Run the development server
+### Health Checks
+- Frontend: `/api/health` (used by Docker Compose)
+- Backend: `/health`
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to use the application
+---
 
 ## How It Works
+1. **Upload:** User uploads an Excel/CSV file.
+2. **Configure:** User specifies header rows and rows per split file.
+3. **Process:** Backend splits the file, preserving header rows in each part, and streams progress.
+4. **Download:** User receives a ZIP archive with all split files.
 
-1. **Upload**: User uploads an Excel (.xlsx) file
-2. **Configure**: User specifies how many rows they want in each split file
-3. **Process**: The application splits the file, preserving the first two rows in each split file
-4. **Download**: A ZIP archive containing all split files is automatically downloaded
+---
 
 ## Technologies Used
+- **Frontend:** Next.js, React, TailwindCSS
+- **Backend:** FastAPI, Pandas, Uvicorn
+- **Packaging:** Docker, Docker Compose
 
-- **Next.js**: React framework for building the web application
-- **TailwindCSS**: For styling the user interface
-- **xlsx**: For reading and writing Excel files
-- **jszip**: For creating ZIP archives
-
-## Deployment
-
-### Standard Deployment
-
-This application can be deployed to Vercel or any other Next.js hosting platform:
-
-```bash
-npm run build
-# or
-yarn build
-```
-
-Then deploy the built application to your preferred hosting platform.
-
-### Docker Deployment
-
-The application is dockerized for easy deployment in any environment that supports Docker.
-
-#### Building the Docker Image
-
-```bash
-docker build -t xebo-response-upload-helper .
-```
-
-#### Running the Docker Container
-
-```bash
-docker run -p 3000:3000 xebo-response-upload-helper
-```
-
-The application will be available at http://localhost:3000
-
-#### Using Docker Compose
-
-Alternatively, you can use Docker Compose for a more streamlined setup:
-
-```bash
-docker-compose up -d
-```
-
-This will build the image and start the container in detached mode. The application will be available at http://localhost:3000
-
-#### Health Check
-
-The Docker container includes a health check endpoint at `/api/health` that can be used to monitor the application's status.
+---
 
 ## License
+MIT License. See `LICENSE` for details.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+---
+
+## Contributing
+Pull requests and issues are welcome!

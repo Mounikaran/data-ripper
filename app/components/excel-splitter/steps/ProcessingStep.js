@@ -15,10 +15,8 @@ export default function ProcessingStep({ fileName, isLoading, error, onReset, pr
           <div className="w-full max-w-md bg-blue-50 p-3 rounded-lg mb-4 text-left">
             <p className="font-medium text-blue-800 mb-2 text-sm">File Information:</p>
             <div className="grid grid-cols-2 gap-2 text-xs text-gray-800">
-              <p className="text-gray-800">Total rows: <span className="font-medium text-black">{fileMetadata.totalRows}</span></p>
-              <p className="text-gray-800">Data rows: <span className="font-medium text-black">{fileMetadata.dataRows}</span></p>
-              <p className="text-gray-800">Header rows: <span className="font-medium text-black">{fileMetadata.headerRows}</span></p>
-              <p className="text-gray-800">Output files: <span className="font-medium text-black">{fileMetadata.estimatedFiles}</span></p>
+              <p className="text-gray-800">Total rows: <span className="font-medium text-black">{fileMetadata.total_rows}</span></p>
+              <p className="text-gray-800">Output files: <span className="font-medium text-black">{fileMetadata.estimated_files}</span></p>
             </div>
           </div>
         )}
@@ -26,10 +24,10 @@ export default function ProcessingStep({ fileName, isLoading, error, onReset, pr
         {/* Processing Step Indicators */}
         <div className="w-full max-w-md mb-4">
           <div className="flex justify-between relative mb-1">
-            <div className={`flex flex-col items-center z-10 ${processingStep === 'upload' || processingStep === 'parse' || processingStep === 'start' ? 'text-blue-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${processingStep === 'upload' || processingStep === 'parse' || processingStep === 'start' ? 'bg-blue-100 text-blue-600 border-2 border-blue-500' : 'bg-gray-100 text-gray-400'}`}>1</div>
-              <span className="text-xs">Reading</span>
-            </div>
+            <div className="flex flex-col items-center z-10 text-blue-600">
+  <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-blue-100 text-blue-600 border-2 border-blue-500">1</div>
+  <span className="text-xs">Reading</span>
+</div>
             <div className={`flex flex-col items-center z-10 ${processingStep === 'process' ? 'text-blue-600' : 'text-gray-400'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${processingStep === 'process' ? 'bg-blue-100 text-blue-600 border-2 border-blue-500' : 'bg-gray-100 text-gray-400'}`}>2</div>
               <span className="text-xs">Processing</span>

@@ -1,20 +1,17 @@
 {
-  "name": "xebo-reponse-upload-helper",
+  "name": "data-ripper",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" next dev --turbopack",
-    "build": "NODE_OPTIONS=\"--max-old-space-size=8192\" next build",
-    "start": "NODE_OPTIONS=\"--max-old-space-size=4096\" next start",
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "file-saver": "^2.0.5",
-    "jszip": "^3.10.1",
     "next": "15.2.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "xlsx": "^0.18.5"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

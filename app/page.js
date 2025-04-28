@@ -16,7 +16,7 @@ export default function Home() {
             </svg>
           </div>
           <h4 className="text-3xl font-bold text-gray-800">
-            Xebo Response Upload Helper
+            Data Ripper
           </h4>
         </div>
       </header>

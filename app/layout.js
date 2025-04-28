@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Xebo Excel Splitter - Split Large Excel Files",
+  title: "Data Ripper - Split Large Excel Files",
   description: "Upload and split large Excel files while preserving headers. Download as a convenient ZIP archive.",
 };
 

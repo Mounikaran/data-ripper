@@ -1,17 +1,15 @@
 'use client';
 
+import { formatFileSize } from "../utils";
+
 export default function ConfigureStep({ 
   fileName, 
   fileSize, 
   rowsPerFile, 
-  estimatedParts, 
   onRowsChange, 
   onSubmit, 
   onBack, 
   error,
-  formatFileSize,
-  fileType,
-  onFileTypeChange,
   headerRows,
   onHeaderRowsChange
 }) {
@@ -30,71 +28,22 @@ export default function ConfigureStep({
       
       <form onSubmit={onSubmit} className="max-w-sm mx-auto">
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2 text-gray-700" htmlFor="file-type">
-            File Type:
+          <label className="block text-sm font-medium mb-2 text-gray-700" htmlFor="header-rows">
+            Header Rows:
           </label>
-          
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            <button
-              type="button"
-              onClick={() => onFileTypeChange('source')}
-              className={`p-2 text-sm rounded transition-colors ${
-                fileType === 'source' 
-                  ? 'bg-blue-100 border border-blue-400 text-blue-800' 
-                  : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Source File
-              <span className="block text-xs mt-1 text-gray-500">(1 header row)</span>
-            </button>
-            
-            <button
-              type="button"
-              onClick={() => onFileTypeChange('template')}
-              className={`p-2 text-sm rounded transition-colors ${
-                fileType === 'template' 
-                  ? 'bg-blue-100 border border-blue-400 text-blue-800' 
-                  : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Response Template
-              <span className="block text-xs mt-1 text-gray-500">(2 header rows)</span>
-            </button>
-            
-            <button
-              type="button"
-              onClick={() => onFileTypeChange('custom')}
-              className={`p-2 text-sm rounded transition-colors ${
-                fileType === 'custom' 
-                  ? 'bg-blue-100 border border-blue-400 text-blue-800' 
-                  : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Custom
-              <span className="block text-xs mt-1 text-gray-500">(Set headers)</span>
-            </button>
-          </div>
-          
-          {fileType === 'custom' && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2 text-gray-700" htmlFor="header-rows">
-                Header Rows:
-              </label>
-              <input
-                id="header-rows"
-                type="number"
-                min="1"
-                max="10"
-                value={headerRows}
-                onChange={(e) => onHeaderRowsChange(parseInt(e.target.value, 10))}
-                className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 text-sm text-gray-700"
-              />
-              <p className="mt-1 text-xs text-gray-600">
-                Number of rows to preserve as headers in each file
-              </p>
-            </div>
-          )}
-          
+          <input
+            id="header-rows"
+            type="number"
+            min="1"
+            max="10"
+            value={headerRows}
+            onChange={(e) => onHeaderRowsChange(parseInt(e.target.value, 10))}
+            className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 text-sm text-gray-700"
+          />
+          <p className="mt-1 text-xs text-gray-600">
+            Number of rows to preserve as headers in each file
+          </p>
+
           <label className="block text-sm font-medium mb-2 text-gray-700" htmlFor="rows-per-file">
             Rows Per File:
           </label>
@@ -109,18 +58,8 @@ export default function ConfigureStep({
             }`}
           />
           
-          {rowsPerFile <= 0 ? (
-            <p className="mt-2 text-xs text-red-500 font-medium">
-              Please enter a value greater than 0
-            </p>
-          ) : estimatedParts > 0 ? (
-            <p className="mt-2 text-xs text-gray-700">
-              Will create approximately {estimatedParts} file{estimatedParts !== 1 ? 's' : ''}
-            </p>
-          ) : null}
-          
           <p className="mt-1 text-xs text-gray-600">
-            {fileType === 'source' ? 'The first row' : fileType === 'template' ? 'The first two rows' : `The first ${headerRows} row${headerRows !== 1 ? 's' : ''}`} will be preserved in each file
+            {`The first ${headerRows} row${headerRows !== 1 ? 's' : ''}`} will be preserved in each file
           </p>
         </div>
         
